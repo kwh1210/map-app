@@ -12,84 +12,80 @@ var model = {
 }
 
 
+var map;
+// Create a new blank array for all the listing markers.
+var markers = [];
+// This global polygon variable is to ensure only ONE polygon is rendered.
+var polygon = null;
+// Create placemarkers array to use in multiple functions to have control
+// over the number of places that show.
+var placeMarkers = [];
+function initMap() {
+  // Create a styles array to use with the map.
+  // Constructor creates a new map - only center and zoom are required.
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 40.7413549, lng: -73.9980244},
+    zoom: 13,
+    mapTypeControl: false
+  });
+  // This autocomplete is for use in the search within time entry box.
+  var timeAutocomplete = new google.maps.places.Autocomplete(
+      document.getElementById('search-within-time-text'));
+  // Bias the boundaries within the map for the zoom to area text.
+  timeAutocomplete.bindTo('bounds', map);
+
+  var largeInfowindow = new google.maps.InfoWindow();
+
+  // Style the markers a bit. This will be our listing marker icon.
+//  var defaultIcon = makeMarkerIcon('0091ff');
+  // Create a "highlighted location" marker color for when the user
+  // mouses over the marker.
+//  var highlightedIcon = makeMarkerIcon('FFFF24');
+  // The following group uses the location array to create an array of markers on initialize.
+  for (var i = 0; i < model.locations.length; i++) {
+    // Get the position from the location array.
+    var position = model.locations[i].location;
+    var title = model.locations[i].title;
+    var description = model.locations[i].description;
+    // Create a marker per location, and put into markers array.
+    var marker = new google.maps.Marker({
+      position: position,
+      title: title,
+      description: description,
+      animation: google.maps.Animation.DROP,
+//      icon: defaultIcon,
+      id: i
+    });
+    // Push the marker to our array of markers.
+    markers.push(marker);
+    // Create an onclick event to open the large infowindow at each marker.
+    marker.addListener('click', function() {
+      populateInfoWindow(this, largeInfowindow);
+    });
+    // Two event listeners - one for mouseover, one for mouseout,
+    // to change the colors back and forth.
+    // marker.addListener('mouseover', function() {
+    //   this.setIcon(highlightedIcon);
+    // });
+    // marker.addListener('mouseout', function() {
+    //   this.setIcon(defaultIcon);
+    // });
+  }
+  // document.getElementById('show-listings').addEventListener('click', showListings);
+  // document.getElementById('hide-listings').addEventListener('click', function() {
+  //   hideMarkers(markers);
+  // });
+
+  // document.getElementById('search-within-time').addEventListener('click', function() {
+  //   searchWithinTime();
+  // });
+  // Listen for the event fired when the user selects a prediction from the
+  // picklist and retrieve more details for that place.
+
+}
 var ViewModel = function(){
   var self=this;
-  this.map;
-  // Create a new blank array for all the listing markers.
-  this.markers = [];
-  // This global polygon this.able is to ensure only ONE polygon is rendered.
-  this.polygon = null;
-  // Create placemarkers array to use in multiple functions to have control
-  // over the number of places that show.
-  this.placeMarkers = [];
-  function initMap() {
-    // Create a styles array to use with the map.
-    // Constructor creates a new map - only center and zoom are required.
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 40.7413549, lng: -73.9980244},
-      zoom: 13,
-      mapTypeControl: false
-    });
 
-
-/*
-    // This autocomplete is for use in the search within time entry box.
-    var timeAutocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('search-within-time-text'));
-    // Bias the boundaries within the map for the zoom to area text.
-    timeAutocomplete.bindTo('bounds', map);
-
-    var largeInfowindow = new google.maps.InfoWindow();
-
-    // Style the markers a bit. This will be our listing marker icon.
-    var defaultIcon = makeMarkerIcon('0091ff');
-    // Create a "highlighted location" marker color for when the user
-    // mouses over the marker.
-    var highlightedIcon = makeMarkerIcon('FFFF24');
-    // The following group uses the location array to create an array of markers on initialize.
-    for (var i = 0; i < model.locations.length; i++) {
-      // Get the position from the location array.
-      var position = model.locations[i].location;
-      var title = model.locations[i].title;
-      var description = model.locations[i].description;
-      // Create a marker per location, and put into markers array.
-      var marker = new google.maps.Marker({
-        position: position,
-        title: title,
-        description: description,
-        animation: google.maps.Animation.DROP,
-        icon: defaultIcon,
-        id: i
-      });
-      // Push the marker to our array of markers.
-      markers.push(marker);
-      // Create an onclick event to open the large infowindow at each marker.
-      marker.addListener('click', function() {
-        populateInfoWindow(this, largeInfowindow);
-      });
-      // Two event listeners - one for mouseover, one for mouseout,
-      // to change the colors back and forth.
-      marker.addListener('mouseover', function() {
-        this.setIcon(highlightedIcon);
-      });
-      marker.addListener('mouseout', function() {
-        this.setIcon(defaultIcon);
-      });
-    }
-    document.getElementById('show-listings').addEventListener('click', showListings);
-    document.getElementById('hide-listings').addEventListener('click', function() {
-      hideMarkers(markers);
-    });
-
-    document.getElementById('search-within-time').addEventListener('click', function() {
-      searchWithinTime();
-    });
-    // Listen for the event fired when the user selects a prediction from the
-    // picklist and retrieve more details for that place.
-
-*/
-
-  }
   // This function populates the infowindow when the marker is clicked. We'll only allow
   // one infowindow which will open at the marker that is clicked, and populate based
   // on that markers position.
@@ -115,7 +111,8 @@ var ViewModel = function(){
     }
   }
   // This function will loop through the markers array and display them all.
-  function showListings() {
+  this.showListings = function() {
+    console.log("here?")
     var bounds = new google.maps.LatLngBounds();
     // Extend the boundaries of the map for each marker and display the marker
     for (var i = 0; i < markers.length; i++) {
@@ -230,8 +227,8 @@ var ViewModel = function(){
   }
 }
 
-ko.applyBindings(new ViewModel)
 
+ko.applyBindings(new ViewModel)
 
 // var map;
 // // Create a new blank array for all the listing markers.
