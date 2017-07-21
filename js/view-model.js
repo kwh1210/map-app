@@ -4,8 +4,15 @@ var ViewModel = function(){
   for (var i = 0; i < model.locations.length; i++) {
     markers[i].addListener('click', function() {
       self.populateInfoWindow(this, largeInfowindow);
+      self.toggleBounce(this)
     });
   }
+  var initBound = new google.maps.LatLngBounds();
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+    initBound.extend(markers[i].position);
+  }
+  map.fitBounds(initBound);  
   this.populateInfoWindow = function(marker, infowindow) {
     if (infowindow.marker != marker) {
       infowindow.setContent('');
@@ -43,6 +50,7 @@ var ViewModel = function(){
     var bounds = new google.maps.LatLngBounds();
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(map);
+      self.toggleBounce(markers[i])
       bounds.extend(markers[i].position);
     }
     map.fitBounds(bounds);
@@ -56,12 +64,20 @@ var ViewModel = function(){
     if(marker.getMap()== null){
       marker.setMap(map);
       self.populateInfoWindow(marker,largeInfowindow)
+      self.toggleBounce(this)
     } 
     else{
       largeInfowindow.marker=null
       marker.setMap(null);
     }
   }
+  this.toggleBounce = function(marker) {
+    if (marker.getAnimation() !== null) {
+      marker.setAnimation(null);
+    } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+  }  
   function makeMarkerIcon(markerColor) {
     var markerImage = new google.maps.MarkerImage(
       'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
@@ -131,5 +147,4 @@ var ViewModel = function(){
       window.alert('We could not find any locations within that distance!');
     }
   }
-  self.showListings();
 }
