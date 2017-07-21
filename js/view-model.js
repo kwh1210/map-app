@@ -1,5 +1,5 @@
-var ViewModel = function(){
-  var self=this;
+var ViewModel = function() {
+  var self = this;
   var largeInfowindow = new google.maps.InfoWindow();
   for (var i = 0; i < model.locations.length; i++) {
     markers[i].addListener('click', function() {
@@ -12,20 +12,20 @@ var ViewModel = function(){
     markers[i].setMap(map);
     initBound.extend(markers[i].position);
   }
-  map.fitBounds(initBound);  
+  map.fitBounds(initBound);
   this.populateInfoWindow = function(marker, infowindow) {
     if (infowindow.marker != marker) {
       infowindow.setContent('');
       infowindow.marker = marker;
       infowindow.addListener('closeclick', function() {
-      console.log(infowindow.marker)
-      infowindow.marker = null;
+        console.log(infowindow.marker)
+        infowindow.marker = null;
       });
-      innerHTML='<h1>' + marker.title + '</h1><br>';
-      innerHTML+='<p>' + marker.description + '</p>';
-      innerHTML+= '<br>';
-      innerHTML+= '<h3>Current New York Times headlines : </h2>';
-      innerHTML+= '<hr>';
+      innerHTML = '<h1>' + marker.title + '</h1><br>';
+      innerHTML += '<p>' + marker.description + '</p>';
+      innerHTML += '<br>';
+      innerHTML += '<h3>Current New York Times headlines : </h2>';
+      innerHTML += '<hr>';
       var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
       url += '?' + $.param({
         'api-key': "992dabd260ab48fd98b52d6ee986d8a0",
@@ -35,10 +35,10 @@ var ViewModel = function(){
         url: url,
         method: 'GET',
       }).done(function(result) {
-          result.response.docs.map((doc)=>{
-              innerHTML +='<li>' + doc.headline.main + '</li>' ;
-          })
-          infowindow.setContent(innerHTML);
+        result.response.docs.map((doc) => {
+          innerHTML += '<li>' + doc.headline.main + '</li>';
+        })
+        infowindow.setContent(innerHTML);
       }).fail(function(err) {
         innerHTML += '<p> no article available </p>'
       });
@@ -60,14 +60,13 @@ var ViewModel = function(){
       markers[i].setMap(null);
     }
   }
-  this.toggleOneMarker = function(marker){
-    if(marker.getMap()== null){
+  this.toggleOneMarker = function(marker) {
+    if (marker.getMap() == null) {
       marker.setMap(map);
-      self.populateInfoWindow(marker,largeInfowindow)
+      self.populateInfoWindow(marker, largeInfowindow)
       self.toggleBounce(this)
-    } 
-    else{
-      largeInfowindow.marker=null
+    } else {
+      largeInfowindow.marker = null
       marker.setMap(null);
     }
   }
@@ -77,15 +76,16 @@ var ViewModel = function(){
     } else {
       marker.setAnimation(google.maps.Animation.BOUNCE);
     }
-  }  
+  }
+
   function makeMarkerIcon(markerColor) {
     var markerImage = new google.maps.MarkerImage(
-      'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+      'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor +
       '|40|_|%E2%80%A2',
       new google.maps.Size(21, 34),
       new google.maps.Point(0, 0),
       new google.maps.Point(10, 34),
-      new google.maps.Size(21,34));
+      new google.maps.Size(21, 34));
     return markerImage;
   }
   this.searchWithinTime = function() {
