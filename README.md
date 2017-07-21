@@ -1,7 +1,12 @@
 # map-app
 
+## How to Run MapApp
 
-Short Term TODOs :
+1. Clone the repo.
+
+2. Literally just run index.html with a browser of your choice.
+
+### Short Term TODOs :
 
 1. Mark your location with different style.
 
@@ -9,7 +14,7 @@ Short Term TODOs :
 
 3. Adding relevant pictures to the infowindow.
 
-Long Term TODOS:
+### Long Term TODOS:
 
 1. Use browser location to autopick your location.
 
