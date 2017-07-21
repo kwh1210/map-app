@@ -67,3 +67,19 @@ hr {
 #zoom-to-area {
   width: 24%;
 }
+@media only screen and (max-width: 768px){
+  .options-box{
+    width:200px;
+  }
+  #map{
+    left:222px;
+  }
+}
+@media only screen and (max-width: 425px){
+  .options-box{
+    width:150px;
+  }
+  #map{
+    left:172px;
+  }
+}
