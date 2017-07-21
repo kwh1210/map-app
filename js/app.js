@@ -144,5 +144,5 @@ function initMap() {
     markers.push(marker);
   }
 
-  ko.applyBindings(new ViewModel);
+  ko.applyBindings(new ViewModel());
 }
