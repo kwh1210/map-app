@@ -66,14 +66,19 @@ var ViewModel = function() {
     }
   }
   this.toggleOneMarker = function(marker) {
-    if (marker.getMap() == null) {
-      marker.setMap(map);
-      self.populateInfoWindow(marker, largeInfowindow)
-      self.toggleBounce(this)
-    } else {
-      largeInfowindow.marker = null
-      marker.setMap(null);
-    }
+    // I made better toggle ability for marker yet dumb reviewers want
+    // this button to just display the window. 
+    // if (marker.getMap() == null) {
+    //   marker.setMap(map);
+    //   self.populateInfoWindow(marker, largeInfowindow)
+    //   self.toggleBounce(this)
+    // } else {
+    //   largeInfowindow.marker = null
+    //   marker.setMap(null);
+    // }
+    marker.setMap(map);
+    self.populateInfoWindow(marker, largeInfowindow)
+    self.toggleBounce(this)
   }
   this.toggleBounce = function(marker) {
     if (marker.getAnimation() !== null) {

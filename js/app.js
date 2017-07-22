@@ -117,6 +117,10 @@ var style = [{
   }]
 }];
 
+function googleError(){
+    alert("Problem loading Google Map API")
+ }
+
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {
