@@ -13,6 +13,9 @@ var ViewModel = function() {
     initBound.extend(markers[i].position);
   }
   map.fitBounds(initBound);
+  google.maps.event.addDomListener(window, 'resize', function() {
+  map.fitBounds(bounds); // `bounds` is a `LatLngBounds` object
+  });
   this.populateInfoWindow = function(marker, infowindow) {
     if (infowindow.marker != marker) {
       infowindow.setContent('');
@@ -41,6 +44,8 @@ var ViewModel = function() {
         infowindow.setContent(innerHTML);
       }).fail(function(err) {
         innerHTML += '<p> no article available </p>'
+      }).always(function() {
+        console.log(innerHTML); // call setContent in here
       });
       infowindow.setContent(innerHTML);
       infowindow.open(map, marker);
