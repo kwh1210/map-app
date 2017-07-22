@@ -131,9 +131,6 @@ function initMap() {
     mapTypeControl: false,
     styles: style
   });
-  var timeAutocomplete = new google.maps.places.Autocomplete(
-    document.getElementById('search-within-time-text'));
-  timeAutocomplete.bindTo('bounds', map);
   for (var i = 0; i < model.locations.length; i++) {
     var position = model.locations[i].location;
     var title = model.locations[i].title;
