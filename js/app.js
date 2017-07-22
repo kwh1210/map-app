@@ -118,7 +118,7 @@ var style = [{
 }];
 
 function googleError(){
-    alert("Problem loading Google Map API")
+    alert("Problem loading Google Map API");
  }
 
 function initMap() {
