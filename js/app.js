@@ -142,7 +142,7 @@ function initMap() {
       position: position,
       title: title,
       description: description,
-      animation: google.maps.Animation.BOUNCE,
+      animation: google.maps.Animation.DROP,
       id: i
     });
     markers.push(marker);

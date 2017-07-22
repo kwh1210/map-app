@@ -13,15 +13,11 @@ var ViewModel = function() {
     initBound.extend(markers[i].position);
   }
   map.fitBounds(initBound);
-  google.maps.event.addDomListener(window, 'resize', function() {
-  map.fitBounds(bounds); // `bounds` is a `LatLngBounds` object
-  });
   this.populateInfoWindow = function(marker, infowindow) {
     if (infowindow.marker != marker) {
       infowindow.setContent('');
       infowindow.marker = marker;
       infowindow.addListener('closeclick', function() {
-        console.log(infowindow.marker)
         infowindow.marker = null;
       });
       innerHTML = '<h1>' + marker.title + '</h1><br>';
@@ -44,9 +40,7 @@ var ViewModel = function() {
         infowindow.setContent(innerHTML);
       }).fail(function(err) {
         innerHTML += '<p> no article available </p>'
-      }).always(function() {
-        console.log(innerHTML); // call setContent in here
-      });
+      })
       infowindow.setContent(innerHTML);
       infowindow.open(map, marker);
     }
@@ -55,7 +49,8 @@ var ViewModel = function() {
     var bounds = new google.maps.LatLngBounds();
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(map);
-      self.toggleBounce(markers[i])
+      markers[i].setAnimation(google.maps.Animation.DROP);
+
       bounds.extend(markers[i].position);
     }
     map.fitBounds(bounds);
@@ -85,6 +80,9 @@ var ViewModel = function() {
       marker.setAnimation(null);
     } else {
       marker.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout(()=>{
+        marker.setAnimation(null)
+      },2700)
     }
   }
 
