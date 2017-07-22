@@ -16,10 +16,11 @@
         <hr>
         <div>
           <span class="text">Filter list by keyword :</span>
-          <input id="filter" type="text" placeholder="Ex: Metropolitan">
-          <input id="filter-btn" type="button" value="Go">
+          <input data-bind="textInput: filterText" id="filter" type="text" placeholder="Ex: Metropolitan"><br>
+          <input data-bind="click: filterList" id="show-listings" type="button" value="Filter">
+          <input data-bind="click: resetList" id="show-listings" type="button" value="Reset">          
           <hr>
-          <ul data-bind="foreach : markers" id="museum-list">
+          <ul data-bind="foreach : displayList" id="museum-list">
             <li>
               <button data-bind="text:title, click: $parent.toggleOneMarker" ></button>
             </li>

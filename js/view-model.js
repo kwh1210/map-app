@@ -1,17 +1,18 @@
 var ViewModel = function() {
   var self = this;
-  var filterText = ko.observable();
+  self.filterText = ko.observable();
+  self.displayList = ko.observableArray(markers);
   var largeInfowindow = new google.maps.InfoWindow();
   for (var i = 0; i < model.locations.length; i++) {
-    markers[i].addListener('click', function() {
+    self.displayList()[i].addListener('click', function() {
       self.populateInfoWindow(this, largeInfowindow);
       self.toggleBounce(this)
     });
   }
   var initBound = new google.maps.LatLngBounds();
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
-    initBound.extend(markers[i].position);
+  for (var i = 0; i < self.displayList().length; i++) {
+    self.displayList()[i].setMap(map);
+    initBound.extend(self.displayList()[i].position);
   }
   map.fitBounds(initBound);
   this.populateInfoWindow = function(marker, infowindow) {
@@ -47,19 +48,36 @@ var ViewModel = function() {
       });
     }
   }
+  function filtering(arr,query){
+    if(query !== '' && query !== undefined ){ 
+      query = query.toLowerCase();
+      return arr.filter( (el) =>
+        el.title.toLowerCase().indexOf(query)>-1
+      )
+    } else return arr;
+  }
+  this.filterList = function(){
+    self.hideMarkers()
+    self.displayList(filtering(self.displayList(),self.filterText()))
+    self.showListings()
+  }
+  this.resetList = function(){
+    self.displayList(markers)
+    self.showListings()
+  }
   this.showListings = function() {
     var bounds = new google.maps.LatLngBounds();
-    for (var i = 0; i < markers.length; i++) {
-      markers[i].setMap(map);
-      markers[i].setAnimation(google.maps.Animation.DROP);
+    for (var i = 0; i < self.displayList().length; i++) {
+      self.displayList()[i].setMap(map);
+      self.displayList()[i].setAnimation(google.maps.Animation.DROP);
 
-      bounds.extend(markers[i].position);
+      bounds.extend(self.displayList()[i].position);
     }
-    map.fitBounds(bounds);
+    // map.fitBounds(bounds);
   }
   this.hideMarkers = function() {
-    for (var i = 0; i < markers.length; i++) {
-      markers[i].setMap(null);
+    for (var i = 0; i < self.displayList().length; i++) {
+      self.displayList()[i].setMap(null);
     }
   }
   this.toggleOneMarker = function(marker) {
@@ -86,7 +104,7 @@ var ViewModel = function() {
   //   if (address == '') {
   //     window.alert('You must enter an address.');
   //   } else {
-  //     self.hideMarkers(markers);
+  //     self.hideMarkers(self.displayList());
   //     var origins = [];
   //     for (var i = 0; i < markers.length; i++) {
   //       origins[i] = markers[i].position;
