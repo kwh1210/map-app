@@ -40,9 +40,11 @@ var ViewModel = function() {
         infowindow.setContent(innerHTML);
       }).fail(function(err) {
         innerHTML += '<p> no article available </p>'
-      })
-      infowindow.setContent(innerHTML);
-      infowindow.open(map, marker);
+      }).always(function() {
+        // console.log(innerHTML); // call setContent in here
+        infowindow.setContent(innerHTML);
+        infowindow.open(map, marker);
+      });
     }
   }
   this.showListings = function() {
@@ -84,17 +86,6 @@ var ViewModel = function() {
         marker.setAnimation(null)
       },2700)
     }
-  }
-
-  function makeMarkerIcon(markerColor) {
-    var markerImage = new google.maps.MarkerImage(
-      'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor +
-      '|40|_|%E2%80%A2',
-      new google.maps.Size(21, 34),
-      new google.maps.Point(0, 0),
-      new google.maps.Point(10, 34),
-      new google.maps.Size(21, 34));
-    return markerImage;
   }
   this.searchWithinTime = function() {
     var distanceMatrixService = new google.maps.DistanceMatrixService;
