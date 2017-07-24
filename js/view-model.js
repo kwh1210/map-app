@@ -6,7 +6,7 @@ var ViewModel = function() {
   for (var i = 0; i < model.locations.length; i++) {
     self.displayList()[i].addListener('click', function() {
       self.populateInfoWindow(this, largeInfowindow);
-      self.toggleBounce(this)
+      self.toggleBounce(this);
     });
   }
   var initBound = new google.maps.LatLngBounds();
@@ -58,20 +58,19 @@ var ViewModel = function() {
     } else return arr;
   }
   this.filterList = function() {
-    self.hideMarkers()
-    self.displayList(filtering(self.displayList(), self.filterText()))
-    self.showListings()
+    self.hideMarkers();
+    self.displayList(filtering(self.displayList(), self.filterText()));
+    self.showListings();
   }
   this.resetList = function() {
-    self.displayList(markers)
-    self.showListings()
+    self.displayList(markers);
+    self.showListings();
   }
   this.showListings = function() {
     var bounds = new google.maps.LatLngBounds();
     for (var i = 0; i < self.displayList().length; i++) {
       self.displayList()[i].setMap(map);
       self.displayList()[i].setAnimation(google.maps.Animation.DROP);
-
       bounds.extend(self.displayList()[i].position);
     }
     // map.fitBounds(bounds);
@@ -83,8 +82,8 @@ var ViewModel = function() {
   }
   this.toggleOneMarker = function(marker) {
     marker.setMap(map);
-    self.populateInfoWindow(marker, largeInfowindow)
-    self.toggleBounce(this)
+    self.populateInfoWindow(marker, largeInfowindow);
+    self.toggleBounce(this);
   }
   this.toggleBounce = function(marker) {
     if (marker.getAnimation() !== null) {
@@ -92,7 +91,7 @@ var ViewModel = function() {
     } else {
       marker.setAnimation(google.maps.Animation.BOUNCE);
       setTimeout(() => {
-        marker.setAnimation(null)
+        marker.setAnimation(null);
       }, 2700)
     }
   }
